@@ -1,18 +1,13 @@
 ---
-import PocketBase from 'pocketbase'
-
 import LayoutApp from '@layouts/LayoutApp.astro'
 
 import ProjectCard from '@components/app/projects/ProjectCard.astro'
 
 import AddNewProjectCard from '@components/app/projects/AddNewProjectCard.astro'
 
+import { getProjects } from '@data/pocketbase' //imports the getProject function from `pocketbase.ts`
 
-const pb = new PocketBase('http://127.0.0.1:8090/')
-
-const projects = await pb
-    .collection('projects')
-    .getFullList()
+const projects = await getProjects() //Listens to new projects created and assign to `projects`
 
 console.log(projects)
 ---

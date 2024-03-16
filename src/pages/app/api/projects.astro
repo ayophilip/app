@@ -1,0 +1,18 @@
+---
+export const partial = true
+
+import { addProject } from '@data/pocketbase'
+
+if (Astro.request.method === 'POST') {
+    const formData = await Astro.request.formData()
+
+    const project_name = formData.get('project_name')?.toString() || ''
+
+    const project = await addProject(project_name)
+
+    //htmx when gets the response back (an empty document, actually, 
+    //since we didn’t return any HTML from our “HTML API” partial page), 
+    //will redirect the user to the /app/dashboard page.
+    Astro.response.headers.set('HX-Redirect', `/app/dashboard`)
+}
+---
