@@ -2,9 +2,11 @@
 // This page handles the project URLs
 
 import LayoutApp from '@layouts/LayoutApp.astro'
-import { getProject } from '@data/pocketbase'
+import { getProject, getTasks } from '@data/pocketbase'
 
 const { project_id = '' } = Astro.params
+
+import ButtonAddNewTask from '@components/app/tasks/ButtonAddNewTask.astro'
 
 const project = await getProject(project_id)
 
@@ -12,6 +14,8 @@ const project = await getProject(project_id)
 if(!project) {
     return Astro.redirect('/app/dashboard')
 }
+
+const tasks = await getTasks(project_id)
 ---
 
 <LayoutApp title="{project.name}">
@@ -25,8 +29,24 @@ if(!project) {
               class='p-10 text-white rounded-lg shadow bg-zinc-100 dark:bg-zinc-800'>
               <h2
                 class='pb-10 text-xl font-black text-center uppercase text-zinc-800 dark:text-white'>
-                Tasks to do
+                Tasks to do 
               </h2>
+
+              <div>
+                {
+                  tasks.length === 0 && ( //includes the part inside parentheses only if the condition is true. In this case we show “Nothing yet” if the tasks number is 0
+                    <p class='text-center text-zinc-900 dark:text-white pb-10'>
+                      Nothing yet
+                    </p>
+                  )
+                }
+      
+                <ul class='space-y-6'>
+                  {tasks.map(task => <li>{task.text}</li>)}
+                </ul>
+              </div>
+
+              <ButtonAddNewTask project_id={project_id} /> <!--Add new button to page-->
             </div>
           </div>
     </div>
