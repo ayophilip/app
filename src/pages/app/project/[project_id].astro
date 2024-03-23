@@ -16,11 +16,17 @@ if(!project) {
 }
 
 const tasks = await getTasks(project_id)
+
+import HamburgerMenuButton from '@components/app/HamburgerMenuButton.astro'
+
 ---
 
 <LayoutApp title="{project.name}">
   <div class='mx-auto text-white max-w-7xl space-y-6'>
         <div class='rounded-lg bg-zinc-900 px-5 py-4 sm:py-2.5 text-xl sm:text-2xl md:text-3xl text-white uppercase text-center font-extrabold'>
+          <div class='sm:hidden'>
+            <HamburgerMenuButton />
+          </div>
       {project.name} <!--Otherwise we show the project name in the UI -->
         </div>
 

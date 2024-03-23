@@ -35,6 +35,10 @@ import Sidebar from '@components/app/Sidebar.astro'
             background-color: rgba(0, 0, 0, 0.7);
             backdrop-filter: blur(3px);
         }
+        [x-cloak] {
+        /* fix alpine js flicker on load */
+         display: none;
+        }
     </style>
 </head>
 
@@ -49,7 +53,7 @@ import Sidebar from '@components/app/Sidebar.astro'
                 <div
             class='w-full sm:w-2/3'
             x-data='{showMenu : false}'>
-            <div x-show='showMenu'>
+            <div x-show='showMenu' x-cloak>
               <Sidebar />
             </div>
             <slot />

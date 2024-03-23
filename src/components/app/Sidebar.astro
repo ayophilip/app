@@ -7,6 +7,21 @@ const projects = await getProjects()
     <div class='mb-6 rounded-lg bg-zinc-800'>
       <div
         class='rounded-lg bg-zinc-900 px-5 py-4 sm:py-2.5 text-xl sm:text-2xl md:text-3xl text-white uppercase text-center font-extrabold'>
+        <button
+        aria-label='Hide sidebar'
+        @click.prevent='showMenu = false'
+        class='sm:hidden absolute flex justify-between float-left py-2 pl-2 -mt-1 text-white bg-blue-500 rounded-lg cursor-pointer'>
+        <svg
+          class='w-5 h-5 mr-2'
+          fill='none'
+          stroke-linecap='round'
+          stroke-linejoin='round'
+          stroke-width='2'
+          viewBox='0 0 24 24'
+          stroke='currentColor'>
+          <path d='M6 18L18 6M6 6l12 12'></path>
+        </svg>
+      </button>
         <a href='/app/dashboard'>SECRETPLAN</a>
       </div>
     </div>
