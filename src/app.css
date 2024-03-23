@@ -11,3 +11,7 @@ dialog::backdrop {
   /* fix alpine js flicker on load */
   display: none;
 }
+
+.font-rounded {
+  font-family: 'M PLUS Rounded 1c', sans-serif;
+}
