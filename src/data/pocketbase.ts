@@ -4,6 +4,8 @@ import PocketBase from 'pocketbase'
 export const pb = new PocketBase(import.meta.env.POCKETBASE_URL ||
     process.env.POCKETBASE_URL)
 
+pb.autoCancellation(false)
+
 //Create a getProjects function that will retrieve the projects list
 export async function getProjects() {
     const projects = await pb
