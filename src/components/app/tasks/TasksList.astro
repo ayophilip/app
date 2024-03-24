@@ -1,8 +1,9 @@
 ---
 import { getTasks } from '@data/pocketbase'
 import DeleteTaskButton from './DeleteTaskButton.astro'
-const { project_id } = Astro.props
-const tasks = await getTasks(project_id)
+import CompleteTaskButton from './CompleteTaskButton.astro'
+const { project_id, done } = Astro.props
+const tasks = await getTasks({project_id, done })
 ---
 
 {
@@ -13,8 +14,11 @@ const tasks = await getTasks(project_id)
 
 <ul class='space-y-6 mb-10'>
   {tasks.map(task => <li>
-    <div class='flex justify-between'>
-          <div>{task.text}</div>
+    <div class='flex justify-between space-x-4 items-center'>
+        <div>
+            <CompleteTaskButton task={task} />
+          </div>
+          <div class='flex-1'>{task.text}</div>
           <div>
             <DeleteTaskButton task={task} />
           </div>
