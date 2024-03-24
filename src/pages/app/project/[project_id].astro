@@ -1,23 +1,20 @@
 ---
 // This page handles the project URLs
+const { project_id = '' } = Astro.params
+const project = await getProject(project_id)
 
 import LayoutApp from '@layouts/LayoutApp.astro'
-import { getProject, getTasks } from '@data/pocketbase'
-
-const { project_id = '' } = Astro.params
-
+import { getProject } from '@data/pocketbase'
+import HamburgerMenuButton from '@components/app/HamburgerMenuButton.astro'
+import ProjectStatus from '@components/app/projects/ProjectStatus.astro'
 import ButtonAddNewTask from '@components/app/tasks/ButtonAddNewTask.astro'
-
-const project = await getProject(project_id)
+import TasksList from '@components/app/tasks/TasksList.astro'
 
 // Redirects link back to the dashboard if project corresponding to the id fails 
 if(!project) {
     return Astro.redirect('/app/dashboard')
 }
 
-const tasks = await getTasks(project_id)
-
-import HamburgerMenuButton from '@components/app/HamburgerMenuButton.astro'
 
 ---
 
@@ -27,8 +24,27 @@ import HamburgerMenuButton from '@components/app/HamburgerMenuButton.astro'
           <div class='sm:hidden'>
             <HamburgerMenuButton />
           </div>
-      {project.name} <!--Otherwise we show the project name in the UI -->
+          <span
+          hx-get=`/app/modals/project/${project.id}/edit`
+          hx-target='dialog'>
+          {project.name}
+        </span>
         </div>
+
+        <div
+      class='flex items-center justify-between mx-auto max-w-7xl'>
+      <a href={'/app/dashboard'}>
+        <button
+          type='button'
+          class='text-xl btn-header text-zinc-800 dark:text-white'>
+          ◀︎ All your projects
+        </button>
+      </a>
+      <div class='mr-0.5'>
+        <ProjectStatus project={project} />
+      </div>
+    </div>
+
 
         <div class='space-y-6'>
             <div
@@ -38,20 +54,9 @@ import HamburgerMenuButton from '@components/app/HamburgerMenuButton.astro'
                 Tasks to do 
               </h2>
 
-              <div>
-                {
-                  tasks.length === 0 && ( //includes the part inside parentheses only if the condition is true. In this case we show “Nothing yet” if the tasks number is 0
-                    <p class='text-center text-zinc-900 dark:text-white pb-10'>
-                      Nothing yet
-                    </p>
-                  )
-                }
-      
-                <ul class='space-y-6'>
-                  {tasks.map(task => <li>{task.text}</li>)}
-                </ul>
+              <div id='tasks-todo'>
+                <TasksList project_id={project_id} />
               </div>
-
               <ButtonAddNewTask project_id={project_id} /> <!--Add new button to page-->
             </div>
 

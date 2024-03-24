@@ -3,12 +3,14 @@ import PocketBase from 'pocketbase'
 import type {
     TypedPocketBase,
     ProjectsResponse,
+    ProjectsRecord,
   } from '@src/data/pocketbase-types'
 
 // Initialize PocketBase to this
 export const pb = new PocketBase(import.meta.env.POCKETBASE_URL ||
     process.env.POCKETBASE_URL) as TypedPocketBase
 
+// globally disable auto cancellation
 pb.autoCancellation(false)
 
 //Create a getProjects function that will retrieve the projects list
@@ -93,4 +95,17 @@ function getStatus(project: ProjectsResponse) {
 //delete a project
 export async function deleteProject(id: string) {
   await pb.collection('projects').delete(id)
+}
+
+// update project status
+export async function updateProject(
+  id: string,
+  data: ProjectsRecord
+) {
+  await pb.collection('projects').update(id, data)
+}
+
+//delete a task
+export async function deleteTask(id: string) {
+  await pb.collection('tasks').delete(id)
 }
