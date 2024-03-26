@@ -25,6 +25,20 @@ if (Astro.request.method === 'PUT') {
       completed: false,
       completed_on: '',
     })
+   } else if (action === 'star') {
+   await updateTask(task_id, {
+       starred: true,
+       starred_on: new Date().toISOString(),
+   })
+   } else if (action === 'unstar') {
+   await updateTask(task_id, {
+       starred: false,
+       starred_on: '',
+   })
+  } else if (action === 'edit-text') {
+  await updateTask(task_id, {
+    text: formData.get('task-text') as string,
+  })
   } else {
     return new Response('Invalid action', { status: 400 })
   }
@@ -36,4 +50,8 @@ if (Astro.request.method === 'PUT') {
 
 <div id='tasks-done' hx-swap-oob='true'>
     <TasksList done={true} project_id={project_id} />
+</div>
+
+<div id='starred-tasks-list' hx-swap-oob='true'>
+ <TasksList starred={true} />
 </div>
